@@ -95,6 +95,9 @@ message DAGRequest {
 
 	// supply offset is not enough since we have daylight saving time present in some regions
 	optional string time_zone_name = 11 [(gogoproto.nullable) = false];
+
+	// It indicates the lower_case_table_names.
+	optional uint64 lower_case_table_names = 12;
 }
 
 enum EncodeType {
