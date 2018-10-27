@@ -100,7 +100,7 @@ message DAGRequest {
 	optional string time_zone_name = 11 [(gogoproto.nullable) = false];
 
 	// It indicates the sql_mode.
-	optional uint64 lower_case_table_names = 12;
+	optional uint64 lower_case_table_names = 12 [(gogoproto.nullable) = false];
 }
 
 enum EncodeType {
