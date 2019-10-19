@@ -29,6 +29,7 @@
 		ChecksumResponse
 		Executor
 		TableScan
+		MemTableScan
 		IndexScan
 		Selection
 		Projection
