@@ -30,6 +30,7 @@
 		Executor
 		TableScan
 		MemTableScan
+		SetServerVar
 		IndexScan
 		Selection
 		Projection

@@ -22,6 +22,7 @@ enum ExecType {
 	TypeLimit = 5;
 	TypeStreamAgg = 6;
 	TypeMemTableScan = 7;
+	TypeSetServerVar = 8;
 }
 
 // It represents a Executor.
@@ -35,6 +36,7 @@ message Executor {
 	optional Limit limit = 7;
 	optional Aggregation stream_agg= 8;
 	optional MemTableScan mem_tbl_scan = 9;
+	optional SetServerVar set_server_var = 10;
 }
 
 message TableScan {
@@ -46,6 +48,11 @@ message TableScan {
 message MemTableScan {
 	optional string table_name = 1 [(gogoproto.nullable) = false];
 	repeated ColumnInfo columns = 2;
+}
+
+message SetServerVar {
+	optional string variable_name = 1 [(gogoproto.nullable) = false];
+	optional string variable_value = 2 [(gogoproto.nullable) = false];
 }
 
 message IndexScan {
