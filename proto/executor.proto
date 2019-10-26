@@ -47,6 +47,7 @@ message TableScan
 
 message MemTableScan
 {
+  uint64 store_id;
   optional string table_name = 1 [ (gogoproto.nullable) = false ];
   repeated ColumnInfo columns = 2;
 }
