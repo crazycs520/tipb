@@ -15,3 +15,8 @@ message ResourceGroupTag {
   optional bytes sql_digest = 1;
   optional bytes plan_digest = 2;
 }
+
+enum ResourceGroupKeyLabel {
+  TypeIndex = 0;
+  TypeRow = 1;
+}
