@@ -17,6 +17,7 @@ message ResourceGroupTag {
 }
 
 enum ResourceGroupKeyLabel {
-  TypeIndex = 0;
-  TypeRow = 1;
+  IsOthers = 0;
+  IsIndex = 1;
+  IsRow = 2;
 }
