@@ -26,6 +26,9 @@ enum ExecType {
 	TypeExchangeSender = 9;
 	TypeExchangeReceiver = 10;
 	TypeProjection = 11;
+	TypePartitionTableScan = 12;
+	TypeSort = 13;
+	TypeWindow = 14;
 }
 
 // It represents a Executor.
@@ -43,12 +46,17 @@ message Executor {
 	optional Kill kill = 11;
 	optional ExchangeSender exchange_sender = 12;
 	optional Projection Projection = 13;
+	optional PartitionTableScan partition_table_scan = 14;
+	optional Sort sort = 15;
+	optional Window window = 16;
+	optional uint64 fine_grained_shuffle_stream_count = 17 [(gogoproto.nullable) = false];
+	optional uint64 fine_grained_shuffle_batch_size = 18 [(gogoproto.nullable) = false];
 }
 
 enum ExchangeType {
 	PassThrough = 0;
 	Broadcast = 1;
-        Hash = 2;
+	Hash = 2;
 }
 
 // ExchangeSender will build connection with ExchangeReceiver.
@@ -57,12 +65,15 @@ message ExchangeSender {
 	repeated bytes encoded_task_meta = 2;
 	repeated Expr partition_keys = 3; 
 	optional Executor child = 4;
+	repeated FieldType types = 5;  // partition keys' types
+	repeated FieldType all_field_types = 6;
 }
 
 // ExchangeReceiver accept connection and receiver data from ExchangeSender.
 message ExchangeReceiver {
 	repeated bytes encoded_task_meta = 1;
 	repeated FieldType field_types = 2;
+	optional ExchangeType tp = 3;
 }
 
 enum EngineType {
@@ -79,6 +90,18 @@ message TableScan {
 	optional EngineType next_read_engine = 5 [(gogoproto.nullable) = false]; // which engine we should in next step, only used by tiflash
 	repeated KeyRange ranges = 6 [(gogoproto.nullable) = false]; // For global read in join, we must point out the key ranges when we don't have the region info.
 	repeated int64 primary_prefix_column_ids = 7;
+	optional bool keep_order = 8;
+	optional bool is_fast_scan = 9; // fast_scan is a feature only provided by TiFlash (but not TiKV).
+}
+
+message PartitionTableScan {
+	optional int64 table_id = 1 [(gogoproto.nullable) = false];
+	repeated ColumnInfo columns = 2;
+	optional bool desc = 3 [(gogoproto.nullable) = false];
+	repeated int64 primary_column_ids = 4;
+	repeated int64 primary_prefix_column_ids = 5;
+	repeated int64 partition_ids = 6;
+	optional bool is_fast_scan = 7; // fast_scan is a feature only provided by TiFlash (but not TiKV).
 }
 
 enum JoinType {
@@ -108,6 +131,7 @@ message Join {
 	repeated Expr left_conditions = 9;
 	repeated Expr right_conditions = 10;
 	repeated Expr other_conditions = 11;
+	repeated Expr other_eq_conditions_from_in = 12;
 }
 
 message IndexScan {
@@ -183,4 +207,43 @@ message ExecutorExecutionSummary {
 
 	// The execution concurrency for this executor
 	optional uint64 concurrency = 5;
+}
+
+message Sort {
+	repeated ByItem byItems = 1;
+	optional bool isPartialSort = 2;
+	optional Executor child = 3;
+}
+
+enum WindowBoundType {
+	Following = 0;
+	Preceding = 1;
+	CurrentRow = 2;
+}
+
+message WindowFrameBound {
+	optional WindowBoundType type = 1 [(gogoproto.nullable) = false];
+	optional bool unbounded = 2 [(gogoproto.nullable) = false];
+	optional uint64 offset = 3; // only use for `rows` frame type
+	repeated Expr calcFuncs = 4; // only use for `ranges` frame type
+}
+
+enum WindowFrameType {
+	Rows = 0;
+	Ranges = 1;
+	Groups = 2;
+}
+
+message WindowFrame {
+	optional WindowFrameType type = 1 [(gogoproto.nullable) = false];
+	optional WindowFrameBound start = 2;
+	optional WindowFrameBound end = 3;
+}
+
+message Window {
+	repeated Expr func_desc = 1;
+	repeated ByItem partition_by = 2;
+	repeated ByItem order_by = 3;
+	optional WindowFrame frame = 4;
+	optional Executor child = 5;
 }
