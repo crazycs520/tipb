@@ -47,6 +47,8 @@ message SelectResponse {
 	// ndvs collects the number of distinct value information per range. It will be used to serve as execution feedback information.
 	// Helping us improve the table's statistics information.
 	repeated int64 ndvs = 10;
+
+	repeated Chunk extra_chunks = 11;
 }
 
 // Chunk contains multiple rows data and rows meta.
@@ -127,6 +129,8 @@ message DAGRequest {
 	
 	// Represents tree struct based executors, if this field is set, should ignore the executors field, currently only used in TiFlash
 	optional Executor root_executor = 17;
+
+	optional bool index_lookup = 18;
 }
 
 enum EncodeType {

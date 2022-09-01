@@ -2,67 +2,69 @@
 // source: analyze.proto
 
 /*
-	Package tipb is a generated protocol buffer package.
+Package tipb is a generated protocol buffer package.
 
-	It is generated from these files:
-		analyze.proto
-		checksum.proto
-		executor.proto
-		expression.proto
-		metadata.proto
-		schema.proto
-		select.proto
-		trace.proto
+It is generated from these files:
 
-	It has these top-level messages:
-		AnalyzeReq
-		AnalyzeIndexReq
-		AnalyzeColumnsReq
-		AnalyzeMixedResp
-		AnalyzeColumnsResp
-		AnalyzeIndexResp
-		Bucket
-		Histogram
-		FMSketch
-		SampleCollector
-		CMSketchRow
-		CMSketchTopN
-		CMSketch
-		ChecksumRewriteRule
-		ChecksumRequest
-		ChecksumResponse
-		Executor
-		ExchangeSender
-		ExchangeReceiver
-		TableScan
-		Join
-		IndexScan
-		Selection
-		Projection
-		Aggregation
-		TopN
-		Limit
-		Kill
-		ExecutorExecutionSummary
-		FieldType
-		Expr
-		RpnExpr
-		ByItem
-		InUnionMetadata
-		CompareInMetadata
-		TableInfo
-		ColumnInfo
-		IndexInfo
-		KeyRange
-		Row
-		Error
-		SelectResponse
-		Chunk
-		RowMeta
-		DAGRequest
-		ChunkMemoryLayout
-		UserIdentity
-		StreamResponse
+	analyze.proto
+	checksum.proto
+	executor.proto
+	expression.proto
+	metadata.proto
+	schema.proto
+	select.proto
+	trace.proto
+
+It has these top-level messages:
+
+	AnalyzeReq
+	AnalyzeIndexReq
+	AnalyzeColumnsReq
+	AnalyzeMixedResp
+	AnalyzeColumnsResp
+	AnalyzeIndexResp
+	Bucket
+	Histogram
+	FMSketch
+	SampleCollector
+	CMSketchRow
+	CMSketchTopN
+	CMSketch
+	ChecksumRewriteRule
+	ChecksumRequest
+	ChecksumResponse
+	Executor
+	ExchangeSender
+	ExchangeReceiver
+	TableScan
+	Join
+	IndexScan
+	Selection
+	Projection
+	Aggregation
+	TopN
+	Limit
+	Kill
+	ExecutorExecutionSummary
+	FieldType
+	Expr
+	RpnExpr
+	ByItem
+	InUnionMetadata
+	CompareInMetadata
+	TableInfo
+	ColumnInfo
+	IndexInfo
+	KeyRange
+	Row
+	Error
+	SelectResponse
+	Chunk
+	RowMeta
+	DAGRequest
+	ChunkMemoryLayout
+	UserIdentity
+	StreamResponse
 */
 package tipb
 
