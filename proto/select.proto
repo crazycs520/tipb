@@ -6,6 +6,7 @@ option java_multiple_files = true;
 option java_package = "com.pingcap.tidb.tipb";
 
 import "executor.proto";
+import "schema.proto";
 import "gogoproto/gogo.proto";
 
 option (gogoproto.marshaler_all) = true;
@@ -134,6 +135,8 @@ message DAGRequest {
 	optional bool force_encode_type = 18;
 
 	optional bool index_lookup = 19;
+
+	optional TableInfo table_info = 20;
 }
 
 enum EncodeType {
