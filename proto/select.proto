@@ -134,6 +134,8 @@ message DAGRequest {
 	optional bool force_encode_type = 18;
 
 	optional TableScan extra_table_info = 19;
+
+	repeated Executor extra_executors = 20;
 }
 
 enum EncodeType {
