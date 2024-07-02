@@ -136,6 +136,8 @@ message DAGRequest {
 	optional TableScan extra_table_info = 19;
 
 	repeated Executor extra_executors = 20;
+
+	repeated uint32 extra_output_offsets = 21;
 }
 
 enum EncodeType {
