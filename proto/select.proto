@@ -47,6 +47,8 @@ message SelectResponse {
 	// ndvs collects the number of distinct value information per range. It will be used to serve as execution feedback information.
 	// Helping us improve the table's statistics information.
 	repeated int64 ndvs = 10;
+
+	repeated Chunk extra_chunks = 11;
 }
 
 // Chunk contains multiple rows data and rows meta.
@@ -133,6 +135,12 @@ message DAGRequest {
 
 	// It indicates the number of digits by which to increase the scale of the result of division operations performed with the / operator.
 	optional uint32 div_precision_increment = 19;
+
+	optional TableScan extra_table_info = 20;
+
+	repeated Executor extra_executors = 21;
+
+	repeated uint32 extra_output_offsets = 22;
 }
 
 enum EncodeType {
