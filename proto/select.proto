@@ -136,7 +136,7 @@ message DAGRequest {
 	// It indicates the number of digits by which to increase the scale of the result of division operations performed with the / operator.
 	optional uint32 div_precision_increment = 19;
 
-	optional TableScan extra_table_info = 20;
+	optional int64 extra_table_id = 20;
 
 	repeated Executor extra_executors = 21;
 
