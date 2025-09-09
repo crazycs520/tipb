@@ -139,6 +139,8 @@ message DAGRequest {
 	repeated Executor extra_executors = 20;
 
 	repeated uint32 extra_output_offsets = 21;
+
+	optional bool extra_keep_order = 22;
 }
 
 enum EncodeType {
