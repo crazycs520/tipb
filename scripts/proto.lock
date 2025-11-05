@@ -923,6 +923,10 @@
               {
                 "name": "TypeExpand2",
                 "integer": 16
+              },
+              {
+                "name": "TypeIndexLookUp",
+                "integer": 20
               }
             ]
           },
@@ -1029,11 +1033,11 @@
                 "name": "FTSQueryTypeInvalid"
               },
               {
-                "name": "FTSQueryTypeFilter",
+                "name": "FTSQueryTypeNoScore",
                 "integer": 1
               },
               {
-                "name": "FTSQueryTypeTopK",
+                "name": "FTSQueryTypeWithScore",
                 "integer": 2
               }
             ]
@@ -1339,6 +1343,35 @@
                 "id": 20,
                 "name": "expand2",
                 "type": "Expand2",
+                "optional": true
+              },
+              {
+                "id": 24,
+                "name": "index_lookup",
+                "type": "IndexLookUp",
+                "optional": true
+              },
+              {
+                "id": 25,
+                "name": "parent_idx",
+                "type": "uint32",
+                "optional": true
+              }
+            ]
+          },
+          {
+            "name": "IndexLookUp",
+            "fields": [
+              {
+                "id": 1,
+                "name": "index_handle_offsets",
+                "type": "uint32",
+                "is_repeated": true
+              },
+              {
+                "id": 2,
+                "name": "keep_order",
+                "type": "bool",
                 "optional": true
               }
             ]
@@ -1685,6 +1718,18 @@
                 "name": "top_k",
                 "type": "uint32",
                 "optional": true
+              },
+              {
+                "id": 20,
+                "name": "query_func",
+                "type": "ScalarFuncSig",
+                "optional": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
               }
             ]
           },
@@ -1706,20 +1751,17 @@
               {
                 "id": 2,
                 "name": "ann_query_info",
-                "type": "ANNQueryInfo",
-                "oneof_parent": "index"
+                "type": "ANNQueryInfo"
               },
               {
                 "id": 3,
                 "name": "inverted_query_info",
-                "type": "InvertedQueryInfo",
-                "oneof_parent": "index"
+                "type": "InvertedQueryInfo"
               },
               {
                 "id": 4,
                 "name": "fts_query_info",
-                "type": "FTSQueryInfo",
-                "oneof_parent": "index"
+                "type": "FTSQueryInfo"
               }
             ]
           },
@@ -2177,6 +2219,12 @@
                 "name": "primary_column_ids",
                 "type": "int64",
                 "is_repeated": true
+              },
+              {
+                "id": 7,
+                "name": "fts_query_info",
+                "type": "FTSQueryInfo",
+                "optional": true
               }
             ]
           },
@@ -2408,8 +2456,7 @@
               {
                 "id": 6,
                 "name": "tiflash_scan_context",
-                "type": "TiFlashScanContext",
-                "oneof_parent": "DetailInfo"
+                "type": "TiFlashScanContext"
               },
               {
                 "id": 7,
@@ -3457,20 +3504,17 @@
               {
                 "id": 1,
                 "name": "scan_object",
-                "type": "ScanAccessObject",
-                "oneof_parent": "access_object"
+                "type": "ScanAccessObject"
               },
               {
                 "id": 2,
                 "name": "dynamic_partition_objects",
-                "type": "DynamicPartitionAccessObjects",
-                "oneof_parent": "access_object"
+                "type": "DynamicPartitionAccessObjects"
               },
               {
                 "id": 3,
                 "name": "other_object",
-                "type": "string",
-                "oneof_parent": "access_object"
+                "type": "string"
               }
             ]
           },
@@ -5442,6 +5486,18 @@
                 "integer": 5201
               },
               {
+                "name": "FTSMatchExpression",
+                "integer": 5202
+              },
+              {
+                "name": "FTSMatchPrefix",
+                "integer": 5203
+              },
+              {
+                "name": "FTSMatchRegexp",
+                "integer": 5204
+              },
+              {
                 "name": "DateFormatSig",
                 "integer": 6001
               },
@@ -6844,6 +6900,12 @@
                     "value": "false"
                   }
                 ]
+              },
+              {
+                "id": 5,
+                "name": "keyspace_id",
+                "type": "uint32",
+                "optional": true
               }
             ]
           }
@@ -7236,6 +7298,35 @@
             ]
           },
           {
+            "name": "IntermediateOutput",
+            "fields": [
+              {
+                "id": 1,
+                "name": "encode_type",
+                "type": "EncodeType",
+                "optional": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "chunks",
+                "type": "Chunk",
+                "is_repeated": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "name": "SelectResponse",
             "fields": [
               {
@@ -7303,6 +7394,12 @@
                 "name": "ndvs",
                 "type": "int64",
                 "is_repeated": true
+              },
+              {
+                "id": 11,
+                "name": "intermediate_outputs",
+                "type": "IntermediateOutput",
+                "is_repeated": true
               }
             ]
           },
@@ -7336,6 +7433,29 @@
                     "value": "false"
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "name": "IntermediateOutputChannel",
+            "fields": [
+              {
+                "id": 1,
+                "name": "executor_idx",
+                "type": "uint32",
+                "required": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "output_offsets",
+                "type": "uint32",
+                "is_repeated": true
               }
             ]
           },
@@ -7502,6 +7622,12 @@
                 "name": "div_precision_increment",
                 "type": "uint32",
                 "optional": true
+              },
+              {
+                "id": 20,
+                "name": "intermediate_output_channels",
+                "type": "IntermediateOutputChannel",
+                "is_repeated": true
               }
             ]
           },
@@ -8045,6 +8171,16 @@
       "def": {
         "messages": [
           {
+            "name": "KeyspaceScope",
+            "fields": [
+              {
+                "id": 1,
+                "name": "keyspace_id",
+                "type": "uint32"
+              }
+            ]
+          },
+          {
             "name": "TopSQLRecord",
             "fields": [
               {
@@ -8062,6 +8198,11 @@
                 "name": "items",
                 "type": "TopSQLRecordItem",
                 "is_repeated": true
+              },
+              {
+                "id": 4,
+                "name": "keyspace_scope",
+                "type": "KeyspaceScope"
               }
             ]
           },
@@ -8122,6 +8263,11 @@
                 "id": 3,
                 "name": "is_internal_sql",
                 "type": "bool"
+              },
+              {
+                "id": 4,
+                "name": "keyspace_scope",
+                "type": "KeyspaceScope"
               }
             ]
           },
@@ -8142,6 +8288,11 @@
                 "id": 3,
                 "name": "encoded_normalized_plan",
                 "type": "string"
+              },
+              {
+                "id": 4,
+                "name": "keyspace_scope",
+                "type": "KeyspaceScope"
               }
             ]
           },
@@ -8157,20 +8308,17 @@
               {
                 "id": 1,
                 "name": "record",
-                "type": "TopSQLRecord",
-                "oneof_parent": "resp_oneof"
+                "type": "TopSQLRecord"
               },
               {
                 "id": 2,
                 "name": "sql_meta",
-                "type": "SQLMeta",
-                "oneof_parent": "resp_oneof"
+                "type": "SQLMeta"
               },
               {
                 "id": 3,
                 "name": "plan_meta",
-                "type": "PlanMeta",
-                "oneof_parent": "resp_oneof"
+                "type": "PlanMeta"
               }
             ]
           }
