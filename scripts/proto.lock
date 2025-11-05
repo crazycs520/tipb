@@ -1029,11 +1029,11 @@
                 "name": "FTSQueryTypeInvalid"
               },
               {
-                "name": "FTSQueryTypeNoScore",
+                "name": "FTSQueryTypeFilter",
                 "integer": 1
               },
               {
-                "name": "FTSQueryTypeWithScore",
+                "name": "FTSQueryTypeTopK",
                 "integer": 2
               }
             ]
@@ -1685,18 +1685,6 @@
                 "name": "top_k",
                 "type": "uint32",
                 "optional": true
-              },
-              {
-                "id": 20,
-                "name": "query_func",
-                "type": "ScalarFuncSig",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
               }
             ]
           },
@@ -1718,17 +1706,20 @@
               {
                 "id": 2,
                 "name": "ann_query_info",
-                "type": "ANNQueryInfo"
+                "type": "ANNQueryInfo",
+                "oneof_parent": "index"
               },
               {
                 "id": 3,
                 "name": "inverted_query_info",
-                "type": "InvertedQueryInfo"
+                "type": "InvertedQueryInfo",
+                "oneof_parent": "index"
               },
               {
                 "id": 4,
                 "name": "fts_query_info",
-                "type": "FTSQueryInfo"
+                "type": "FTSQueryInfo",
+                "oneof_parent": "index"
               }
             ]
           },
@@ -2186,12 +2177,6 @@
                 "name": "primary_column_ids",
                 "type": "int64",
                 "is_repeated": true
-              },
-              {
-                "id": 7,
-                "name": "fts_query_info",
-                "type": "FTSQueryInfo",
-                "optional": true
               }
             ]
           },
@@ -2423,7 +2408,8 @@
               {
                 "id": 6,
                 "name": "tiflash_scan_context",
-                "type": "TiFlashScanContext"
+                "type": "TiFlashScanContext",
+                "oneof_parent": "DetailInfo"
               },
               {
                 "id": 7,
@@ -3471,17 +3457,20 @@
               {
                 "id": 1,
                 "name": "scan_object",
-                "type": "ScanAccessObject"
+                "type": "ScanAccessObject",
+                "oneof_parent": "access_object"
               },
               {
                 "id": 2,
                 "name": "dynamic_partition_objects",
-                "type": "DynamicPartitionAccessObjects"
+                "type": "DynamicPartitionAccessObjects",
+                "oneof_parent": "access_object"
               },
               {
                 "id": 3,
                 "name": "other_object",
-                "type": "string"
+                "type": "string",
+                "oneof_parent": "access_object"
               }
             ]
           },
@@ -5453,18 +5442,6 @@
                 "integer": 5201
               },
               {
-                "name": "FTSMatchExpression",
-                "integer": 5202
-              },
-              {
-                "name": "FTSMatchPrefix",
-                "integer": 5203
-              },
-              {
-                "name": "FTSMatchRegexp",
-                "integer": 5204
-              },
-              {
                 "name": "DateFormatSig",
                 "integer": 6001
               },
@@ -6867,12 +6844,6 @@
                     "value": "false"
                   }
                 ]
-              },
-              {
-                "id": 5,
-                "name": "keyspace_id",
-                "type": "uint32",
-                "optional": true
               }
             ]
           }
@@ -7332,12 +7303,6 @@
                 "name": "ndvs",
                 "type": "int64",
                 "is_repeated": true
-              },
-              {
-                "id": 11,
-                "name": "extra_chunks",
-                "type": "Chunk",
-                "is_repeated": true
               }
             ]
           },
@@ -7536,24 +7501,6 @@
                 "id": 19,
                 "name": "div_precision_increment",
                 "type": "uint32",
-                "optional": true
-              },
-              {
-                "id": 20,
-                "name": "extra_executors",
-                "type": "Executor",
-                "is_repeated": true
-              },
-              {
-                "id": 21,
-                "name": "extra_output_offsets",
-                "type": "uint32",
-                "is_repeated": true
-              },
-              {
-                "id": 22,
-                "name": "extra_keep_order",
-                "type": "bool",
                 "optional": true
               }
             ]
@@ -8098,16 +8045,6 @@
       "def": {
         "messages": [
           {
-            "name": "KeyspaceScope",
-            "fields": [
-              {
-                "id": 1,
-                "name": "keyspace_id",
-                "type": "uint32"
-              }
-            ]
-          },
-          {
             "name": "TopSQLRecord",
             "fields": [
               {
@@ -8125,11 +8062,6 @@
                 "name": "items",
                 "type": "TopSQLRecordItem",
                 "is_repeated": true
-              },
-              {
-                "id": 4,
-                "name": "keyspace_scope",
-                "type": "KeyspaceScope"
               }
             ]
           },
@@ -8190,11 +8122,6 @@
                 "id": 3,
                 "name": "is_internal_sql",
                 "type": "bool"
-              },
-              {
-                "id": 4,
-                "name": "keyspace_scope",
-                "type": "KeyspaceScope"
               }
             ]
           },
@@ -8215,11 +8142,6 @@
                 "id": 3,
                 "name": "encoded_normalized_plan",
                 "type": "string"
-              },
-              {
-                "id": 4,
-                "name": "keyspace_scope",
-                "type": "KeyspaceScope"
               }
             ]
           },
@@ -8235,17 +8157,20 @@
               {
                 "id": 1,
                 "name": "record",
-                "type": "TopSQLRecord"
+                "type": "TopSQLRecord",
+                "oneof_parent": "resp_oneof"
               },
               {
                 "id": 2,
                 "name": "sql_meta",
-                "type": "SQLMeta"
+                "type": "SQLMeta",
+                "oneof_parent": "resp_oneof"
               },
               {
                 "id": 3,
                 "name": "plan_meta",
-                "type": "PlanMeta"
+                "type": "PlanMeta",
+                "oneof_parent": "resp_oneof"
               }
             ]
           }
