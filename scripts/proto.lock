@@ -1373,6 +1373,12 @@
                 "name": "keep_order",
                 "type": "bool",
                 "optional": true
+              },
+              {
+                "id": 3,
+                "name": "children",
+                "type": "Executor",
+                "is_repeated": true
               }
             ]
           },
