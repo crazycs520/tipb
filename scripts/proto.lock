@@ -923,6 +923,10 @@
               {
                 "name": "TypeExpand2",
                 "integer": 16
+              },
+              {
+                "name": "TypeIndexLookUp",
+                "integer": 20
               }
             ]
           },
@@ -1340,6 +1344,41 @@
                 "name": "expand2",
                 "type": "Expand2",
                 "optional": true
+              },
+              {
+                "id": 24,
+                "name": "index_lookup",
+                "type": "IndexLookUp",
+                "optional": true
+              },
+              {
+                "id": 25,
+                "name": "parent_idx",
+                "type": "uint32",
+                "optional": true
+              }
+            ]
+          },
+          {
+            "name": "IndexLookUp",
+            "fields": [
+              {
+                "id": 1,
+                "name": "index_handle_offsets",
+                "type": "uint32",
+                "is_repeated": true
+              },
+              {
+                "id": 2,
+                "name": "keep_order",
+                "type": "bool",
+                "optional": true
+              },
+              {
+                "id": 3,
+                "name": "children",
+                "type": "Executor",
+                "is_repeated": true
               }
             ]
           },
@@ -7265,6 +7304,35 @@
             ]
           },
           {
+            "name": "IntermediateOutput",
+            "fields": [
+              {
+                "id": 1,
+                "name": "encode_type",
+                "type": "EncodeType",
+                "optional": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "chunks",
+                "type": "Chunk",
+                "is_repeated": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "name": "SelectResponse",
             "fields": [
               {
@@ -7335,8 +7403,8 @@
               },
               {
                 "id": 11,
-                "name": "extra_chunks",
-                "type": "Chunk",
+                "name": "intermediate_outputs",
+                "type": "IntermediateOutput",
                 "is_repeated": true
               }
             ]
@@ -7371,6 +7439,29 @@
                     "value": "false"
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "name": "IntermediateOutputChannel",
+            "fields": [
+              {
+                "id": 1,
+                "name": "executor_idx",
+                "type": "uint32",
+                "required": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "output_offsets",
+                "type": "uint32",
+                "is_repeated": true
               }
             ]
           },
@@ -7540,21 +7631,9 @@
               },
               {
                 "id": 20,
-                "name": "extra_executors",
-                "type": "Executor",
+                "name": "intermediate_output_channels",
+                "type": "IntermediateOutputChannel",
                 "is_repeated": true
-              },
-              {
-                "id": 21,
-                "name": "extra_output_offsets",
-                "type": "uint32",
-                "is_repeated": true
-              },
-              {
-                "id": 22,
-                "name": "extra_keep_order",
-                "type": "bool",
-                "optional": true
               }
             ]
           },
