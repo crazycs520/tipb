@@ -39,6 +39,8 @@ enum ExecType {
 	TypeExpand2 = 16;   // Expand2 executor is used to expand underlying data sources to feed different grouping sets.
 
 	TypeIndexLookUp = 20; // https://github.com/pingcap/tipb/pull/376
+	// Reserve 100-119 for root executors used by pushdown.
+	TypeIndexLookUpRoot = 100;
 }
 
 // It represents a Executor.
@@ -65,6 +67,8 @@ message Executor {
 	optional Expand2 expand2= 20;
 
 	optional IndexLookUp index_lookup = 24;
+	// Root-only index lookup executor used by remote executor pushdown.
+	optional IndexLookUp index_lookup_root = 100;
 	// It indicates the parent index of current executor.
 	// Not set indicates its parent is the next executor in `DAGRequest.executors`.
 	optional uint32 parent_idx = 25;
@@ -597,3 +601,46 @@ message Expand2{
 	optional Executor child = 3;
 }
 
+message RemoteExecutionContext {
+	optional uint64 connection_id = 1 [(gogoproto.nullable) = false];
+	optional uint64 sql_mode = 2 [(gogoproto.nullable) = false];
+	optional string time_zone_name = 3 [(gogoproto.nullable) = false];
+	optional int64 time_zone_offset = 4 [(gogoproto.nullable) = false];
+	optional int32 collation = 5 [(gogoproto.nullable) = false];
+	optional uint32 stmt_flags = 6 [(gogoproto.nullable) = false];
+	optional uint64 lock_wait_timeout_ms = 7 [(gogoproto.nullable) = false];
+	optional uint64 max_warning_count = 8 [(gogoproto.nullable) = false];
+	optional uint32 div_precision_increment = 9 [(gogoproto.nullable) = false];
+	optional uint64 flags = 10 [(gogoproto.nullable) = false];
+}
+
+message RemoteExecutorRequest {
+	// Encoded kvrpcpb.Context.
+	optional bytes context = 1;
+	// Encoded Executor tree (tipb.Executor).
+	optional bytes plan = 2;
+	repeated KeyRange ranges = 3 [(gogoproto.nullable) = false];
+	optional uint64 start_ts = 4 [(gogoproto.nullable) = false];
+	optional int64 schema_ver = 5 [(gogoproto.nullable) = false];
+	optional uint64 limit = 6 [(gogoproto.nullable) = false];
+	repeated uint32 output_offsets = 7;
+	repeated FieldType output_types = 8;
+	optional bool keep_order = 9 [(gogoproto.nullable) = false];
+	optional uint32 chunk_size = 10 [(gogoproto.nullable) = false];
+	optional uint64 timeout_ms = 11 [(gogoproto.nullable) = false];
+	optional RemoteExecutionContext session_ctx = 12;
+}
+
+message RemoteExecutorResponse {
+	// Encoded SelectResponse.
+	optional bytes data = 1;
+	// Encoded errorpb.Error.
+	optional bytes region_error = 2;
+	// Encoded kvrpcpb.LockInfo.
+	optional bytes locked = 3;
+	optional string other_error = 4 [(gogoproto.nullable) = false];
+	// Encoded kvrpcpb.ExecDetailsV2.
+	optional bytes exec_details_v2 = 5;
+	// Encoded kvrpcpb.Warning list, each element is a single Warning message.
+	repeated bytes warnings = 6;
+}
