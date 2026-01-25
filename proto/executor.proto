@@ -37,6 +37,9 @@ enum ExecType {
 	TypeWindow = 14;
 	TypeExpand = 15;   // Expand executor is used to expand underlying data sources to feed different grouping sets.
 	TypeExpand2 = 16;   // Expand2 executor is used to expand underlying data sources to feed different grouping sets.
+	TypeBroadcastQuery = 17;
+	TypeCTESink = 18;
+	TypeCTESource = 19;
 
 	TypeIndexLookUp = 20; // https://github.com/pingcap/tipb/pull/376
 	// Reserve 100-119 for root executors used by pushdown.
@@ -65,6 +68,9 @@ message Executor {
 	optional uint64 fine_grained_shuffle_batch_size = 18 [(gogoproto.nullable) = false];
 	optional Expand expand = 19;
 	optional Expand2 expand2= 20;
+	optional BroadcastQuery broadcast_query = 21;
+	optional CTESink cte_sink = 22;
+	optional CTESource cte_source = 23;
 
 	optional IndexLookUp index_lookup = 24;
 	// Root-only index lookup executor used by remote executor pushdown.
@@ -72,6 +78,21 @@ message Executor {
 	// It indicates the parent index of current executor.
 	// Not set indicates its parent is the next executor in `DAGRequest.executors`.
 	optional uint32 parent_idx = 25;
+}
+
+message CTESink {
+	required uint32 cte_id = 1 [(gogoproto.nullable) = false];
+	required uint32 cte_source_num = 2 [(gogoproto.nullable) = false];
+	required uint32 cte_sink_num = 3 [(gogoproto.nullable) = false];
+	optional Executor child = 4;
+	repeated FieldType field_types = 5;
+}
+
+message CTESource {
+	required uint32 cte_id = 1 [(gogoproto.nullable) = false];
+	required uint32 cte_source_num = 2 [(gogoproto.nullable) = false];
+	required uint32 cte_sink_num = 3 [(gogoproto.nullable) = false];
+	repeated FieldType field_types = 4;
 }
 
 message IndexLookUp {
@@ -599,6 +620,10 @@ message Expand2{
 	repeated ExprSlice proj_exprs = 1;           // for grouping sets generated projection levels, like [a, b, c, 1#gen_col1, 2#gen_col2]
 	repeated string generated_output_names = 2;  // for output names for generated cols like grouping_id etc, like "gen_col1", "gen_col2" here
 	optional Executor child = 3;
+}
+
+message BroadcastQuery {
+	optional string query = 1;
 }
 
 message RemoteExecutionContext {
