@@ -925,6 +925,18 @@
                 "integer": 16
               },
               {
+                "name": "TypeBroadcastQuery",
+                "integer": 17
+              },
+              {
+                "name": "TypeCTESink",
+                "integer": 18
+              },
+              {
+                "name": "TypeCTESource",
+                "integer": 19
+              },
+              {
                 "name": "TypeIndexLookUp",
                 "integer": 20
               },
@@ -1350,6 +1362,24 @@
                 "optional": true
               },
               {
+                "id": 21,
+                "name": "broadcast_query",
+                "type": "BroadcastQuery",
+                "optional": true
+              },
+              {
+                "id": 22,
+                "name": "cte_sink",
+                "type": "CTESink",
+                "optional": true
+              },
+              {
+                "id": 23,
+                "name": "cte_source",
+                "type": "CTESource",
+                "optional": true
+              },
+              {
                 "id": 24,
                 "name": "index_lookup",
                 "type": "IndexLookUp",
@@ -1366,6 +1396,106 @@
                 "name": "parent_idx",
                 "type": "uint32",
                 "optional": true
+              }
+            ]
+          },
+          {
+            "name": "CTESink",
+            "fields": [
+              {
+                "id": 1,
+                "name": "cte_id",
+                "type": "uint32",
+                "required": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "cte_source_num",
+                "type": "uint32",
+                "required": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "name": "cte_sink_num",
+                "type": "uint32",
+                "required": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "name": "child",
+                "type": "Executor",
+                "optional": true
+              },
+              {
+                "id": 5,
+                "name": "field_types",
+                "type": "FieldType",
+                "is_repeated": true
+              }
+            ]
+          },
+          {
+            "name": "CTESource",
+            "fields": [
+              {
+                "id": 1,
+                "name": "cte_id",
+                "type": "uint32",
+                "required": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "cte_source_num",
+                "type": "uint32",
+                "required": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "name": "cte_sink_num",
+                "type": "uint32",
+                "required": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "name": "field_types",
+                "type": "FieldType",
+                "is_repeated": true
               }
             ]
           },
@@ -3277,6 +3407,17 @@
             ]
           },
           {
+            "name": "BroadcastQuery",
+            "fields": [
+              {
+                "id": 1,
+                "name": "query",
+                "type": "string",
+                "optional": true
+              }
+            ]
+          },
+          {
             "name": "RemoteExecutionContext",
             "fields": [
               {
@@ -3419,6 +3560,18 @@
               {
                 "id": 3,
                 "name": "ranges",
+                "type": "KeyRange",
+                "is_repeated": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 13,
+                "name": "outer_ranges",
                 "type": "KeyRange",
                 "is_repeated": true,
                 "options": [

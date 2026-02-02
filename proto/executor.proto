@@ -645,6 +645,8 @@ message RemoteExecutorRequest {
 	// Encoded Executor tree (tipb.Executor).
 	optional bytes plan = 2;
 	repeated KeyRange ranges = 3 [(gogoproto.nullable) = false];
+	// Probe-side ranges (HashJoinRoot only).
+	repeated KeyRange outer_ranges = 13 [(gogoproto.nullable) = false];
 	optional uint64 start_ts = 4 [(gogoproto.nullable) = false];
 	optional int64 schema_ver = 5 [(gogoproto.nullable) = false];
 	optional uint64 limit = 6 [(gogoproto.nullable) = false];
