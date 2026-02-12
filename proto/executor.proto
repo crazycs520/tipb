@@ -652,6 +652,9 @@ message RemoteExecutorRequest {
 	optional uint64 limit = 6 [(gogoproto.nullable) = false];
 	repeated uint32 output_offsets = 7;
 	repeated FieldType output_types = 8;
+	// When the root executor is Projection, this field stores the child output schema types,
+	// so the remote side can evaluate projection expressions with correct input types.
+	repeated FieldType projection_input_types = 14;
 	optional bool keep_order = 9 [(gogoproto.nullable) = false];
 	optional uint32 chunk_size = 10 [(gogoproto.nullable) = false];
 	optional uint64 timeout_ms = 11 [(gogoproto.nullable) = false];

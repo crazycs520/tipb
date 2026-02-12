@@ -3630,6 +3630,12 @@
                 "is_repeated": true
               },
               {
+                "id": 14,
+                "name": "projection_input_types",
+                "type": "FieldType",
+                "is_repeated": true
+              },
+              {
                 "id": 9,
                 "name": "keep_order",
                 "type": "bool",
