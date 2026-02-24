@@ -642,7 +642,7 @@ message RemoteExecutionContext {
 message RemoteExecutorRequest {
 	// Encoded kvrpcpb.Context.
 	optional bytes context = 1;
-	// Encoded Executor tree (tipb.Executor).
+	// Encoded DAGRequest (tipb.DAGRequest, list-based executors).
 	optional bytes plan = 2;
 	repeated KeyRange ranges = 3 [(gogoproto.nullable) = false];
 	// Probe-side ranges (HashJoinRoot only).
@@ -655,6 +655,11 @@ message RemoteExecutorRequest {
 	// When the root executor is Projection, this field stores the child output schema types,
 	// so the remote side can evaluate projection expressions with correct input types.
 	repeated FieldType projection_input_types = 14;
+	// When the root executor is Projection, this field stores the mapping from
+	// projection_input_types (in order) to the child plan output schema offsets.
+	// For HashJoin child, offsets are based on full joined schema (left schema + right schema).
+	// For non-HashJoin child, offsets must be 0..N-1 (identity mapping).
+	repeated uint32 projection_input_offsets = 15;
 	optional bool keep_order = 9 [(gogoproto.nullable) = false];
 	optional uint32 chunk_size = 10 [(gogoproto.nullable) = false];
 	optional uint64 timeout_ms = 11 [(gogoproto.nullable) = false];

@@ -3636,6 +3636,12 @@
                 "is_repeated": true
               },
               {
+                "id": 15,
+                "name": "projection_input_offsets",
+                "type": "uint32",
+                "is_repeated": true
+              },
+              {
                 "id": 9,
                 "name": "keep_order",
                 "type": "bool",
