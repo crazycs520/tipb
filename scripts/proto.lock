@@ -941,10 +941,6 @@
                 "integer": 20
               },
               {
-                "name": "TypeIndexLookUpRoot",
-                "integer": 100
-              },
-              {
                 "name": "TypeTableReader",
                 "integer": 101
               },
@@ -952,6 +948,12 @@
                 "name": "TypeIndexReader",
                 "integer": 102
               }
+            ],
+            "reserved_ids": [
+              100
+            ],
+            "reserved_names": [
+              "TypeIndexLookUpRoot"
             ]
           },
           {
@@ -1394,12 +1396,6 @@
                 "optional": true
               },
               {
-                "id": 100,
-                "name": "index_lookup_root",
-                "type": "IndexLookUp",
-                "optional": true
-              },
-              {
                 "id": 101,
                 "name": "table_reader",
                 "type": "TableReader",
@@ -1417,6 +1413,12 @@
                 "type": "uint32",
                 "optional": true
               }
+            ],
+            "reserved_ids": [
+              100
+            ],
+            "reserved_names": [
+              "index_lookup_root"
             ]
           },
           {
@@ -3485,317 +3487,85 @@
           },
           {
             "name": "RemoteExecutionContext",
-            "fields": [
-              {
-                "id": 1,
-                "name": "connection_id",
-                "type": "uint64",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 2,
-                "name": "sql_mode",
-                "type": "uint64",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 3,
-                "name": "time_zone_name",
-                "type": "string",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 4,
-                "name": "time_zone_offset",
-                "type": "int64",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 5,
-                "name": "collation",
-                "type": "int32",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 6,
-                "name": "stmt_flags",
-                "type": "uint32",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 7,
-                "name": "lock_wait_timeout_ms",
-                "type": "uint64",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 8,
-                "name": "max_warning_count",
-                "type": "uint64",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 9,
-                "name": "div_precision_increment",
-                "type": "uint32",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 10,
-                "name": "flags",
-                "type": "uint64",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              }
+            "reserved_ids": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10
+            ],
+            "reserved_names": [
+              "connection_id",
+              "sql_mode",
+              "time_zone_name",
+              "time_zone_offset",
+              "collation",
+              "stmt_flags",
+              "lock_wait_timeout_ms",
+              "max_warning_count",
+              "div_precision_increment",
+              "flags"
             ]
           },
           {
             "name": "RemoteExecutorRequest",
-            "fields": [
-              {
-                "id": 1,
-                "name": "context",
-                "type": "bytes",
-                "optional": true
-              },
-              {
-                "id": 2,
-                "name": "plan",
-                "type": "bytes",
-                "optional": true
-              },
-              {
-                "id": 3,
-                "name": "ranges",
-                "type": "KeyRange",
-                "is_repeated": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 13,
-                "name": "outer_ranges",
-                "type": "KeyRange",
-                "is_repeated": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 4,
-                "name": "start_ts",
-                "type": "uint64",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 5,
-                "name": "schema_ver",
-                "type": "int64",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 6,
-                "name": "limit",
-                "type": "uint64",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 7,
-                "name": "output_offsets",
-                "type": "uint32",
-                "is_repeated": true
-              },
-              {
-                "id": 8,
-                "name": "output_types",
-                "type": "FieldType",
-                "is_repeated": true
-              },
-              {
-                "id": 14,
-                "name": "projection_input_types",
-                "type": "FieldType",
-                "is_repeated": true
-              },
-              {
-                "id": 15,
-                "name": "projection_input_offsets",
-                "type": "uint32",
-                "is_repeated": true
-              },
-              {
-                "id": 9,
-                "name": "keep_order",
-                "type": "bool",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 10,
-                "name": "chunk_size",
-                "type": "uint32",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 11,
-                "name": "timeout_ms",
-                "type": "uint64",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 12,
-                "name": "session_ctx",
-                "type": "RemoteExecutionContext",
-                "optional": true
-              }
+            "reserved_ids": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15
+            ],
+            "reserved_names": [
+              "context",
+              "plan",
+              "ranges",
+              "outer_ranges",
+              "start_ts",
+              "schema_ver",
+              "limit",
+              "output_offsets",
+              "output_types",
+              "projection_input_types",
+              "projection_input_offsets",
+              "keep_order",
+              "chunk_size",
+              "timeout_ms",
+              "session_ctx"
             ]
           },
           {
             "name": "RemoteExecutorResponse",
-            "fields": [
-              {
-                "id": 1,
-                "name": "data",
-                "type": "bytes",
-                "optional": true
-              },
-              {
-                "id": 2,
-                "name": "region_error",
-                "type": "bytes",
-                "optional": true
-              },
-              {
-                "id": 3,
-                "name": "locked",
-                "type": "bytes",
-                "optional": true
-              },
-              {
-                "id": 4,
-                "name": "other_error",
-                "type": "string",
-                "optional": true,
-                "options": [
-                  {
-                    "name": "(gogoproto.nullable)",
-                    "value": "false"
-                  }
-                ]
-              },
-              {
-                "id": 5,
-                "name": "exec_details_v2",
-                "type": "bytes",
-                "optional": true
-              },
-              {
-                "id": 6,
-                "name": "warnings",
-                "type": "bytes",
-                "is_repeated": true
-              }
+            "reserved_ids": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "reserved_names": [
+              "data",
+              "region_error",
+              "locked",
+              "other_error",
+              "exec_details_v2",
+              "warnings"
             ]
           }
         ],

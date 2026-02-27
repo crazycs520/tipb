@@ -43,7 +43,8 @@ enum ExecType {
 
 	TypeIndexLookUp = 20; // https://github.com/pingcap/tipb/pull/376
 	// Reserve 100-119 for root executors used by pushdown.
-	TypeIndexLookUpRoot = 100;
+	reserved 100;
+	reserved "TypeIndexLookUpRoot";
 	TypeTableReader = 101;
 	TypeIndexReader = 102;
 }
@@ -75,8 +76,8 @@ message Executor {
 	optional CTESource cte_source = 23;
 
 	optional IndexLookUp index_lookup = 24;
-	// Root-only index lookup executor used by remote executor pushdown.
-	optional IndexLookUp index_lookup_root = 100;
+	reserved 100;
+	reserved "index_lookup_root";
 	optional TableReader table_reader = 101;
 	optional IndexReader index_reader = 102;
 	// It indicates the parent index of current executor.
@@ -646,55 +647,44 @@ message BroadcastQuery {
 }
 
 message RemoteExecutionContext {
-	optional uint64 connection_id = 1 [(gogoproto.nullable) = false];
-	optional uint64 sql_mode = 2 [(gogoproto.nullable) = false];
-	optional string time_zone_name = 3 [(gogoproto.nullable) = false];
-	optional int64 time_zone_offset = 4 [(gogoproto.nullable) = false];
-	optional int32 collation = 5 [(gogoproto.nullable) = false];
-	optional uint32 stmt_flags = 6 [(gogoproto.nullable) = false];
-	optional uint64 lock_wait_timeout_ms = 7 [(gogoproto.nullable) = false];
-	optional uint64 max_warning_count = 8 [(gogoproto.nullable) = false];
-	optional uint32 div_precision_increment = 9 [(gogoproto.nullable) = false];
-	optional uint64 flags = 10 [(gogoproto.nullable) = false];
+	reserved 1 to 10;
+	reserved "connection_id",
+		"sql_mode",
+		"time_zone_name",
+		"time_zone_offset",
+		"collation",
+		"stmt_flags",
+		"lock_wait_timeout_ms",
+		"max_warning_count",
+		"div_precision_increment",
+		"flags";
 }
 
 message RemoteExecutorRequest {
-	// Encoded kvrpcpb.Context.
-	optional bytes context = 1;
-	// Encoded DAGRequest (tipb.DAGRequest, list-based executors).
-	optional bytes plan = 2;
-	repeated KeyRange ranges = 3 [(gogoproto.nullable) = false];
-	// Probe-side ranges (HashJoinRoot only).
-	repeated KeyRange outer_ranges = 13 [(gogoproto.nullable) = false];
-	optional uint64 start_ts = 4 [(gogoproto.nullable) = false];
-	optional int64 schema_ver = 5 [(gogoproto.nullable) = false];
-	optional uint64 limit = 6 [(gogoproto.nullable) = false];
-	repeated uint32 output_offsets = 7;
-	repeated FieldType output_types = 8;
-	// When the root executor is Projection, this field stores the child output schema types,
-	// so the remote side can evaluate projection expressions with correct input types.
-	repeated FieldType projection_input_types = 14;
-	// When the root executor is Projection, this field stores the mapping from
-	// projection_input_types (in order) to the child plan output schema offsets.
-	// For HashJoin child, offsets are based on full joined schema (left schema + right schema).
-	// For non-HashJoin child, offsets must be 0..N-1 (identity mapping).
-	repeated uint32 projection_input_offsets = 15;
-	optional bool keep_order = 9 [(gogoproto.nullable) = false];
-	optional uint32 chunk_size = 10 [(gogoproto.nullable) = false];
-	optional uint64 timeout_ms = 11 [(gogoproto.nullable) = false];
-	optional RemoteExecutionContext session_ctx = 12;
+	reserved 1 to 15;
+	reserved "context",
+		"plan",
+		"ranges",
+		"outer_ranges",
+		"start_ts",
+		"schema_ver",
+		"limit",
+		"output_offsets",
+		"output_types",
+		"projection_input_types",
+		"projection_input_offsets",
+		"keep_order",
+		"chunk_size",
+		"timeout_ms",
+		"session_ctx";
 }
 
 message RemoteExecutorResponse {
-	// Encoded SelectResponse.
-	optional bytes data = 1;
-	// Encoded errorpb.Error.
-	optional bytes region_error = 2;
-	// Encoded kvrpcpb.LockInfo.
-	optional bytes locked = 3;
-	optional string other_error = 4 [(gogoproto.nullable) = false];
-	// Encoded kvrpcpb.ExecDetailsV2.
-	optional bytes exec_details_v2 = 5;
-	// Encoded kvrpcpb.Warning list, each element is a single Warning message.
-	repeated bytes warnings = 6;
+	reserved 1 to 6;
+	reserved "data",
+		"region_error",
+		"locked",
+		"other_error",
+		"exec_details_v2",
+		"warnings";
 }
