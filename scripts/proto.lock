@@ -943,6 +943,14 @@
               {
                 "name": "TypeIndexLookUpRoot",
                 "integer": 100
+              },
+              {
+                "name": "TypeTableReader",
+                "integer": 101
+              },
+              {
+                "name": "TypeIndexReader",
+                "integer": 102
               }
             ]
           },
@@ -1392,6 +1400,18 @@
                 "optional": true
               },
               {
+                "id": 101,
+                "name": "table_reader",
+                "type": "TableReader",
+                "optional": true
+              },
+              {
+                "id": 102,
+                "name": "index_reader",
+                "type": "IndexReader",
+                "optional": true
+              },
+              {
                 "id": 25,
                 "name": "parent_idx",
                 "type": "uint32",
@@ -1519,6 +1539,28 @@
                 "name": "children",
                 "type": "Executor",
                 "is_repeated": true
+              }
+            ]
+          },
+          {
+            "name": "TableReader",
+            "fields": [
+              {
+                "id": 1,
+                "name": "child",
+                "type": "Executor",
+                "optional": true
+              }
+            ]
+          },
+          {
+            "name": "IndexReader",
+            "fields": [
+              {
+                "id": 1,
+                "name": "child",
+                "type": "Executor",
+                "optional": true
               }
             ]
           },
@@ -2162,6 +2204,12 @@
                 "is_repeated": true
               },
               {
+                "id": 15,
+                "name": "output_offsets",
+                "type": "uint32",
+                "is_repeated": true
+              },
+              {
                 "id": 4,
                 "name": "inner_idx",
                 "type": "int64",
@@ -2373,6 +2421,24 @@
                 "id": 7,
                 "name": "fts_query_info",
                 "type": "FTSQueryInfo",
+                "optional": true
+              },
+              {
+                "id": 8,
+                "name": "ranges",
+                "type": "KeyRange",
+                "is_repeated": true,
+                "options": [
+                  {
+                    "name": "(gogoproto.nullable)",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "id": 9,
+                "name": "keep_order",
+                "type": "bool",
                 "optional": true
               }
             ]

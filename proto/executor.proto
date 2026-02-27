@@ -44,6 +44,8 @@ enum ExecType {
 	TypeIndexLookUp = 20; // https://github.com/pingcap/tipb/pull/376
 	// Reserve 100-119 for root executors used by pushdown.
 	TypeIndexLookUpRoot = 100;
+	TypeTableReader = 101;
+	TypeIndexReader = 102;
 }
 
 // It represents a Executor.
@@ -75,6 +77,8 @@ message Executor {
 	optional IndexLookUp index_lookup = 24;
 	// Root-only index lookup executor used by remote executor pushdown.
 	optional IndexLookUp index_lookup_root = 100;
+	optional TableReader table_reader = 101;
+	optional IndexReader index_reader = 102;
 	// It indicates the parent index of current executor.
 	// Not set indicates its parent is the next executor in `DAGRequest.executors`.
 	optional uint32 parent_idx = 25;
@@ -100,6 +104,14 @@ message IndexLookUp {
 	repeated uint32 index_handle_offsets = 1;
 	optional bool keep_order = 2;
 	repeated Executor children = 3;
+}
+
+message TableReader {
+	optional Executor child = 1;
+}
+
+message IndexReader {
+	optional Executor child = 1;
 }
 
 enum ExchangeType {
@@ -298,6 +310,9 @@ message Join {
 	optional JoinType join_type = 1 [(gogoproto.nullable) = false];
 	optional JoinExecType join_exec_type = 2 [(gogoproto.nullable) = false];
 	repeated Executor children = 3;
+	// Output column offsets in the full joined schema (left schema + right schema).
+	// The Join executor's output schema is defined as these offsets in order.
+	repeated uint32 output_offsets = 15;
 	optional int64 inner_idx = 4 [(gogoproto.nullable) = false]; // 0 or 1
 	repeated Expr left_join_keys = 5;
 	repeated Expr right_join_keys = 6;
@@ -341,6 +356,10 @@ message IndexScan {
 	optional bool unique = 5; // check whether it is a unique index.
 	repeated int64 primary_column_ids = 6;
 	optional FTSQueryInfo fts_query_info = 7; // only used by TiFlash
+	// encoded KV ranges.
+	repeated KeyRange ranges = 8 [(gogoproto.nullable) = false];
+	// same semantics as PhysicalIndexScan.KeepOrder
+	optional bool keep_order = 9;
 }
 
 message Selection {
