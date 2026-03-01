@@ -1,0 +1,36 @@
+syntax = "proto2";
+
+package tipb;
+
+option java_multiple_files = true;
+option java_package = "com.pingcap.tidb.tipb";
+
+import "executor.proto";
+
+import "gogoproto/gogo.proto";
+import "rustproto.proto";
+
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.goproto_unkeyed_all) = false;
+option (gogoproto.goproto_unrecognized_all) = false;
+option (gogoproto.goproto_sizecache_all) = false;
+option (rustproto.lite_runtime_all) = true;
+
+// RemoteExecPlan is the tree-only plan used by RemoteExecutor.
+//
+// It explicitly carries the minimal session fields required during execution
+// (extracted from DAGRequest) to avoid inheriting full DAG semantics.
+message RemoteExecPlan {
+	// Tree-only executor plan.
+	optional Executor root_executor = 1;
+
+	// Session fields required by RemoteExecutor.
+	optional string time_zone_name = 2 [(gogoproto.nullable) = false];
+	optional int64 time_zone_offset = 3 [(gogoproto.nullable) = false];
+	optional uint64 flags = 4 [(gogoproto.nullable) = false];
+	optional uint64 sql_mode = 5;
+	optional uint64 max_warning_count = 6;
+	optional uint32 div_precision_increment = 7;
+}
